@@ -4,7 +4,7 @@ import { Homepage } from "./homepage/page";
 
 export default function Home() {
   return (
-    <section className="w-full">
+    <section className="max-w-[1440px] mx-auto">
       <div>
         <Navigation />
         <Homepage />

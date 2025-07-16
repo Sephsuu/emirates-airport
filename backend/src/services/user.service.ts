@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/entities/user.entity';
+import { User } from 'src/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel : Model<UserDocument>) {}
+    constructor(@InjectModel(User.name) private userModel : Model<User>) {}
 
     async getAllUsers(): Promise<User[]> {
         try {
@@ -38,7 +38,6 @@ export class UserService {
             return await newUser.save();
         } catch (error) {
             if (error.code === 11000) {
-                console.log('Error', error);
                 throw new BadRequestException("User already exist");
             }
             throw new InternalServerErrorException('Failed to create user.');

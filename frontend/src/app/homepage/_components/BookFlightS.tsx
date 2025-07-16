@@ -3,11 +3,48 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { bookFlighTabs } from "@/lib/data-array";
 import { ChevronDownIcon, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export function SearchFlightTab() {
+
+export function BookFlightSection() {
+    const [activeTab, setActiveTab] = useState<string>("Search Flight")
+
+    return(
+        <section className="bg-light py-8 h-fit">
+
+            <div className="text-darkred text-5xl text-center">Book a flight</div>
+
+            <div className="w-[70%] flex flex-col items-center mx-auto mt-4">
+
+                <div className="flex rounded-t-lg bg-lightbrown shadow-sm w-fit z-20 overflow-hidden">
+                    {
+                        bookFlighTabs.map((tab, index) => (
+                            <button 
+                                onClick={ () => setActiveTab(tab.title) }
+                                className={`px-4 py-0.5 ${activeTab === tab.title && "bg-darkred text-light"}`}
+                                key={ index }
+                            >
+                                { tab.title }
+                            </button>
+                        ))
+                    }
+                </div>
+
+                <div className="bg-lightbrown w-full shadow-sm gap-2 p-4 rounded-sm">
+                    { activeTab === "Search Flight" && ( <SearchFlightTab /> )}
+                    { activeTab === "Manage Booking" && ( <ManageBoookingTab /> )}
+                    { activeTab === "Flight Status" && ( <FlightStatus /> )}
+                </div>
+
+            </div>
+        </section>
+    );
+}
+
+function SearchFlightTab() {
     return(
         <section className="flex gap-2">
             <div className="w-full bg-light rounded-sm py-1">
@@ -47,7 +84,7 @@ export function SearchFlightTab() {
     );
 }
 
-export function ManageBoookingTab() {
+function ManageBoookingTab() {
     return(
         <section>
             <div className="w-full flex gap-2">
@@ -81,7 +118,7 @@ export function ManageBoookingTab() {
     );
 }
 
-export function FlightStatus() {
+function FlightStatus() {
     const [activeClass, setActiveClass] = useState<string>("Routes");
     const [activeDay, setActiveDay] = useState<string>("Departure Day");
     const [open, setOpen] = useState<boolean>(false)
