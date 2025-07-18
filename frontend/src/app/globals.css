@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 button {
   cursor: pointer;
   transition: ease-in-out 2s;
@@ -42,6 +43,7 @@ body {
 button, a {
   transition: ease all 0.5s;
 }
+ 
 
 /* [role="combobox"],
 [role="combobox"]:focus {

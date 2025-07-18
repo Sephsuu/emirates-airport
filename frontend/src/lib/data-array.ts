@@ -114,4 +114,11 @@ export const tripsDestination = [
     { country: "United States of America", city: "Los Angeles", link: "https://i.pinimg.com/736x/57/68/fe/5768fe644c81a2e3e8c56ca08bb2d4a1.jpg" },
     { country: "Italy", city: "Rome", link: "https://i.pinimg.com/736x/74/f7/a0/74f7a0855a495544833890b5d76a27db.jpg" },
     
-]
+];
+
+export const partnerAirlines = [
+    "air-canada.svg", "air-france.svg", "airasia.svg",
+    "british-airways.svg", "delta-airline.svg", "eithad-airways.svg",
+    "southwest.svg", "ph-airline.svg", "qatar-airways.svg"
+
+];

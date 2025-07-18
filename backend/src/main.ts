@@ -1,9 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+console.log('URL:', process.env.SUPABASE_URL);
+console.log('KEY:', process.env.SUPABASE_KEY);
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log', 'debug'] });
-  const port = process.env.PORT || 3001; 
-  await app.listen(port);
+  const app = await NestFactory.create(AppModule);
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

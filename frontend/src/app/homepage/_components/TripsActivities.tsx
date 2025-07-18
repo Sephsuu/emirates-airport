@@ -26,7 +26,7 @@ export function TripsActivitesSection() {
     }, []);
 
     return(
-        <section className="relative py-8 w-full h-screen">
+        <section className="relative pt-8 pb-24 w-full">
             <div 
                 className="absolute inset-0 bg-cover bg-center pointer-events-none"
                 style={{ backgroundImage: `url(${tripsImages[index]})`, opacity: "0.1" }}>
