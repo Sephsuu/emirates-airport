@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SupabaseModule } from './_supabase/supabase.module';
 import { UserModule } from './entities/users/user.module';
 import { AuthModule } from './auth/auth.module';
+import { CountryModule } from './entities/countries/country.module';
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 		}),
 
 		AuthModule,
+		CountryModule,
 		SupabaseModule,
 		UserModule,
 	],
