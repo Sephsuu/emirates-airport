@@ -1,17 +1,19 @@
 import { flightStatus } from "@/lib/data-array";
 import { displayCurrentDateTime, formatFlightDate } from "@/lib/utils";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Marquee from 'react-fast-marquee';
 
 export function FlightStatusSection() {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [dateTime, setDateTime] = useState<string | null>(null);
 
-    const handleCycleComplete = () => {
-            setIsPlaying(true); 
-            setTimeout(() => {
-                setIsPlaying(false); 
-            }, 5000);
-    };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDateTime(displayCurrentDateTime());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     return(
         <section className="bg-dark p-8">
             <div className="flex justify-between items-center">
@@ -19,7 +21,7 @@ export function FlightStatusSection() {
                     <div className="text-5xl text-light font-emirates-bold">Flight Status</div>
                     <div className="text-md text-slate-400">Track flights online, view detailed flight information, and monitor destinations.</div>
                 </div>
-                <div className="bg-darkred text-light px-4 py-2 rounded-md h-fit">{ displayCurrentDateTime() }</div>
+                <div className="bg-darkred text-light px-4 py-2 rounded-md h-fit">{ dateTime }</div>
             </div>
             
             <div className="grid grid-cols-6 text-light mt-4">

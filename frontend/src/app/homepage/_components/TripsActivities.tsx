@@ -63,7 +63,7 @@ export function TripsActivitesSection() {
                                 className={`w-70 h-70 object-cover border-3 rounded-xl ${rotate[index]} transform transition-transform duration-500 hover:scale-105`}
                             />
                         </TooltipTrigger>
-                        <TooltipContent className="bg-light" fillArrow="light">
+                        <TooltipContent className="bg-light">
                             <div className="text-lg text-darkred font-emirates-bold"><span className="text-gray-500">{ item.city },</span> { item.country }</div>
                         </TooltipContent>
                     </Tooltip>

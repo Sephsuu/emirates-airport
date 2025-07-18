@@ -31,7 +31,13 @@ export function AdminSidebar() {
                                 </CollapsibleTrigger>
                                 <CollapsibleContent className="flex flex-col">
                                     {item.children.map((sub, index) => (
-                                        <Link className="ml-8 py-1 pl-2 w-full text-sm rounded-sm hover:text-yellow-600 hover:bg-light" href={ sub.href } key={ index }>{ sub.title }</Link>
+                                        <Link 
+                                            className="ml-8 py-1 pl-2 w-full text-sm rounded-sm hover:text-yellow-600 hover:bg-light" 
+                                            href={`/admin/${sub.href}`} 
+                                            key={ index }
+                                        >
+                                            { sub.title }
+                                        </Link>
                                     ))}
                                 </CollapsibleContent>
                             </SidebarMenuItem>

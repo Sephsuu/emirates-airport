@@ -37,7 +37,7 @@ export function AdminLogin() {
 
     return(
         <section 
-            className="h-screen flex justify-center items-center bg-light bg-cover"
+            className="h-screen w-screen flex justify-center items-center bg-light bg-cover"
             style={{ backgroundImage: "url(/images/ffflurry.svg)" }}
         >
             <Toaster closeButton position="top-center" />
