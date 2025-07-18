@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SupabaseModule } from './_supabase/supabase.module';
-import { UserModule } from './users/user.module';
+import { UserModule } from './entities/users/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -12,8 +13,9 @@ import { UserModule } from './users/user.module';
 			isGlobal: true
 		}),
 
+		AuthModule,
 		SupabaseModule,
-		UserModule
+		UserModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

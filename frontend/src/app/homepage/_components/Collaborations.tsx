@@ -10,7 +10,7 @@ export function CollaborationsSection() {
                 </div>
                 <div className="col-span-4 grid grid-cols-3 gap-2">
                     {partnerAirlines.map((item, index) => (
-                        <div className="flex justify-center items-center m-4">
+                        <div className="flex justify-center items-center m-4" key={ index }>
                             <img src={`/images/${item}`} alt="" className="drop-shadow-white drop-shadow-xs" key={ index } />
                         </div>
                         

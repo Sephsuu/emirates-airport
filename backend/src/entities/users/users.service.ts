@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { SupabaseService } from "src/_supabase/supabase.service";
-import { CreateUserDTO, UserDTO } from "./user.dto";
+import { CreateUserDTO, GetUserDTO, UserDTO } from "./user.dto";
 import * as bcrypt from 'bcrypt';
 
 const table = '_user';
@@ -31,6 +31,16 @@ export class UserService {
         if (error) {
             throw new Error(error.message)
         }
+
+        return data;
+    }
+
+    async findUserByEmail(email: string): Promise<UserDTO> {
+        const { data, error } = await this.supabaseService.client
+        .from(table)
+        .select('*')
+        .eq('email', email)
+        .single();
 
         return data;
     }

@@ -4,7 +4,9 @@ import Image from "next/image";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "../ui/navigation-menu";
 import Link from "next/link";
 import { navigationRoutes } from "@/lib/data-array";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { homeRoutes, subRoutes } from "./routes";
+import { cn } from "@/lib/utils";
 
 export function Navigation() {
      const [isScrolled, setIsScrolled] = useState(false);
@@ -47,13 +49,17 @@ export function Navigation() {
                             <NavigationMenuItem key={ index }>
                                 <NavigationMenuTrigger className={ `!bg-transparent font-emirates-bold hover:!text-gold ${isScrolled ? "text-dark" : "text-light"}` }>{ route.title }</NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    {
-                                        route.children.map((child, index) => (
-                                            <NavigationMenuLink asChild key={ index }>
-                                                <Link href={"/"}>{ child.title }</Link>
-                                            </NavigationMenuLink>
-                                        ))
-                                    }
+                                    <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                    {subRoutes[index].map((components) => (
+                                        <ListItem
+                                            key={ components.title }
+                                            title={ components.title }
+                                            href={ components.title }
+                                        >
+                                            { components.description }
+                                        </ListItem>
+                                    ))}
+                                    </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         ))
@@ -68,4 +74,24 @@ export function Navigation() {
 
         </section>
     );
+}
+
+function ListItem({
+  title,
+  children,
+  href,
+  ...props
+}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+  return (
+    <li {...props}>
+      <NavigationMenuLink asChild>
+        <Link href={href}>
+          <div className="text-sm leading-none font-medium">{title}</div>
+          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  )
 }

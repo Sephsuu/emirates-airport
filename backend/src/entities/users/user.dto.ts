@@ -9,3 +9,9 @@ export class CreateUserDTO {
     email: string;
     password: string;
 }
+
+export class GetUserDTO {
+    id: string;
+    email: string;
+}
+
