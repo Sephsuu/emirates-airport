@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { SupabaseService } from "src/_supabase/supabase.service";
-import { CreateCountryDTO } from "./country.dto";
+import { CountryDTO, CreateCountryDTO } from "./country.dto";
+import { error } from "console";
 
 const table = 'country';
 
@@ -13,6 +14,7 @@ export class CountryService {
         const { data, error } = await this.supabaseService.client
         .from(table)
         .select('*')
+        .order('name', { ascending: true })
 
         if (!data) throw new Error(error.message)
 
@@ -35,6 +37,34 @@ export class CountryService {
         .single();        
 
         if (error) throw new Error(error.message);
+
+        return data;
+    }
+
+    async updateCountry(country: CountryDTO) {
+        const { data, error } = await this.supabaseService.client
+        .from(table)
+        .update(country)
+        .eq('id', country.id)
+        .select('*')
+        .single();
+
+        if (error) throw Error(error.message);
+        if (!data) throw Error("Country did not exists.");
+
+        return data;
+    }
+
+    async deleteCountry(id: string) {
+        const { data, error } = await this.supabaseService.client
+        .from(table)
+        .delete()
+        .eq('id', id)
+        .select('*')
+        .single();
+
+        if (error) throw Error(error.message);
+        if (!data) throw Error("Country do not exists");
 
         return data;
     }

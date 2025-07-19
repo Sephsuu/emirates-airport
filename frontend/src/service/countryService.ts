@@ -32,4 +32,34 @@ export class CountryService {
 
         return res.json();
     }
+
+    static async updateCountry(country: Country) {
+        const payload = {
+            ...country, 
+            code: country.code && country.code.toUpperCase(),
+            name: country.name && country.name.toUpperCase(),
+        }
+
+        const res = await fetch(`${URL}`, {
+            method: 'PATCH',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) throw new Error("Bad Response");
+
+        return res.json();
+    }
+
+    static async deleteCountry(id: string) {
+        const res = await fetch(`${URL}/${id}`, {
+            method: 'DELETE',
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) throw new Error("Bad Response");
+
+        return res.json();
+    }
+
 }

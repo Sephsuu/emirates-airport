@@ -1,61 +1,47 @@
-"use client"
-
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Toaster } from "@/components/ui/sonner";
 import { handleChange } from "@/lib/form-handler";
 import { CountryService } from "@/service/countryService";
+import { Country } from "@/types/country"
 import { LoaderCircle } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useState } from "react"
 import { toast } from "sonner";
 
 const continents = ["ASIA", "AFRICA", "ANTARCTICA", "EUROPE", "NORTH AMERICA", "OCEANIA", "SOUTH AMERICA"];
-const countryInit = {
-    name: "",
-    code: "",
-    continent: ""
+
+type Props = {
+    toUpdate: Country,
+    setUpdate: (i: Country | undefined) => void;
+    setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CreateCountry() {
-    const [country, setCountry] = useState(countryInit);
+export function UpdateCountry({ toUpdate, setUpdate, setReload }: Props) {
+    const [country, setCountry] = useState(toUpdate);
     const [onProcess, setProcess] = useState(false);
 
     async function handleSubmit() {
         try {
             setProcess(true);
-            const data = await CountryService.createCountry(country);
-            if (data) toast.success(`${data.name} added to countries.`);
+            const data = await CountryService.updateCountry(country);
+            if (data) toast.success(`${data.name} updated successfully.`);
 
         } catch (error) { toast.error(`${error}`) }
         finally {
             setProcess(false);
-            setCountry(countryInit);
+            setUpdate?.(undefined);
+            setReload(prev => !prev);
         }
     }
-
+    
     return(
-        <section className="w-full flex justify-center items-center">
-            <Toaster closeButton position="top-center" />
-            <div className="flex flex-col gap-4 p-8 bg-white shadow-md w-100 pb-12 border-1 border-slate-300">
-                <div className="w-full flex justify-center items-center gap-2 my-1">
-                    <Image
-                        src={ "/images/emirates_logo.png" }
-                        alt=""
-                        className="w-20"
-                        width={ 90 }
-                        height={ 90 }
-                    />
-                    <Image
-                        src={ "/images/uae_logo.png" }
-                        alt=""
-                        className="w-7"
-                        width={ 30 }
-                        height={ 30 }
-                    />
-                </div>
-
-                <div className="text-2xl font-emirates-bold text-center">Add a Country</div>
+        <Dialog open onOpenChange={open => { if (!open) setUpdate?.(undefined); }}>
+            <DialogContent>
+                <DialogTitle className="flex items-center gap-4">
+                    <div><img src="/images/emirates_logo.png" className="w-12"  /></div>
+                    <img src="/images/uae_logo.png" className="w-5"  />
+                    <div className="text-md">Update Country: <span className="text-darkred">{ toUpdate.name }</span></div>
+                </DialogTitle>
 
                 <div>
                     <div className="text-md text-gray">Country Name</div>
@@ -104,14 +90,18 @@ export default function CreateCountry() {
                     </div>
                 </div>
 
-                <Button
-                    className="!bg-gold text-light text-md hover:opacity-90 w-full mt-2"
-                    onClick={ handleSubmit }
-                    disabled={ onProcess }
-                >
-                    {onProcess ? (<><LoaderCircle className="w-4 h-4 animate-spin text-light" />Adding Country</>) : "Add Country"}
-                </Button>
-            </div>
-        </section>
+                <div className="flex justify-end gap-2">
+                    <DialogClose asChild><Button variant="secondary" size="sm">Cancel</Button></DialogClose>
+                    <Button
+                        onClick={ handleSubmit }
+                        className="!bg-gold hover:opacity-90"
+                        size="sm"
+                        disabled={ onProcess }
+                    >
+                        {onProcess ? (<><LoaderCircle className="w-4 h-4 animate-spin text-light" />Updating</>) : "Update"}
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
     )
 }
