@@ -6,32 +6,32 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Loader from "@/components/ui/loader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { CountryService } from "@/service/countryService";
-import { Country } from "@/types/country";
 import { error } from "console";
 import { Delete, Download, Funnel, Info, Plus, SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react"
 import { toast } from "sonner";
-import { UpdateCountry } from "./_components/UpdateCountry";
 import { Toaster } from "@/components/ui/sonner";
-import { DeleteCountry } from "./_components/DeleteCountry";
+import { City } from "@/types/city";
+import { CityService } from "@/service/cityService";
+import { UpdateCity } from "./_components/UpdateCity";
+import { DeleteCity } from "./_components/DeleteCity";
 
-export default function CountryTable() {
+export default function CityTable() {
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(true);
     const [search, setSearch] = useState("");
-    const [toUpdate, setUpdate] = useState<Country>();
-    const [toDelete, setDelete] = useState<Country>();
+    const [toUpdate, setUpdate] = useState<City>();
+    const [toDelete, setDelete] = useState<City>();
 
-    const [countries, setCountries] = useState<Country[]>([]);
-    const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
+    const [filteredCities, setFilteredCities] = useState<City[]>([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await CountryService.getAllCountries();
-                setCountries(data);
+                const data = await CityService.getAllCities();
+                setCities(data);
             } catch (error) { toast.error(`${error}`) } 
             finally {
                 setLoading(false);
@@ -43,26 +43,25 @@ export default function CountryTable() {
     useEffect(() => {
         const searchInput = search.trim().toUpperCase();
         if (searchInput !== "") {
-            setFilteredCountries(
-                countries.filter((item) => 
-                    item.code?.includes(searchInput) ||
+            setFilteredCities(
+                cities.filter((item) => 
                     item.name?.includes(searchInput)
                 )
             );
-        } else setFilteredCountries(countries);
-    }, [search, countries]);
+        } else setFilteredCities(cities);
+    }, [search, cities]);
 
     if (loading) {return <Loader />}
     return(
-        <section className="w-full flex flex-col gap-2">
+        <section className="w-full flex flex-col">
             <Toaster closeButton position="top-center" />
-            <div className="text-2xl text-left font-emirates-bold">All Countries</div>
+            <div className="text-2xl text-darkred font-emirates-bold">All Cities</div>
 
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
                 <input 
                     type="text"
                     className="w-100 pl-3 py-1 rounded-md bg-light border-1 border-slate-300 shadow-xs"
-                    placeholder="Search for a country"
+                    placeholder="Search for a city"
                     value={ search }
                     onChange={ e => setSearch(e.target.value) }
                 />
@@ -94,28 +93,26 @@ export default function CountryTable() {
                     </Button>
                     <Link 
                         className="!bg-darkred rounded-md inline-flex items-center justify-center gap-2 text-light px-4 py-1 hover:opacity-90"
-                        href="/admin/countries/add"
+                        href="/admin/countries/cities/add"
                     >
-                        <Plus className="text-4 h-4" />Add a country
+                        <Plus className="text-4 h-4" />Add a city
                     </Link>
                 </div>
             </div>
 
-            <div className="grid grid-cols-4 bg-gold text-light font-emirates-bold rounded-sm text-sm py-1.5">
-                <div className="pl-2">Alpha Code</div>
-                <div className="pl-2">Country Name</div>
-                <div className="pl-2">Continent</div>
+            <div className="grid grid-cols-3 bg-gold text-light font-emirates-bold rounded-sm text-sm py-1.5 mt-2">
+                <div className="pl-2">City Name</div>
+                <div className="pl-2">Country</div>
                 <div className="pl-2">Action</div>
             </div>
-            <div className="grid grid-cols-4 bg-light gap-2 font-emirates-bold rounded-sm text-sm">
-            {countries.length > 0 ?
-                filteredCountries.length > 0 ?
-                    filteredCountries.map((item, index) => (
+            <div className="grid grid-cols-3 bg-light gap-2 font-emirates-bold rounded-sm text-sm">
+            {cities.length > 0 ?
+                filteredCities.length > 0 ?
+                    filteredCities.map((item, index) => (
                      
                             <Fragment key={ index }>
-                                <div className="pl-2 border-b-1 border-r-1 border-slate-300 py-1.5">{ item.code }</div>
-                                <div className="pl-2 border-b-1 border-r-1 border-slate-300 py-1.5 uppercase">{ item.name }</div>
-                                <div className="pl-2 border-b-1 border-r-1 border-slate-300 py-1.5">{ item.continent }</div>
+                                <div className="pl-2 border-b-1 border-r-1 border-slate-300 py-1.5">{ item.name }</div>
+                                <div className="pl-2 border-b-1 border-r-1 border-slate-300 py-1.5 uppercase">{ item.country!.name }</div>
                                 <div className="flex items-center gap-4 pl-2 border-b-1 border-r-1 border-slate-300 py-1.5">
                                     <button onClick={ () => setUpdate(item) }><SquarePen className="w-4 h-4 text-darkgreen" /></button>
                                     <button><Info className="w-4 h-4 text-yellow-700" /></button>
@@ -135,7 +132,7 @@ export default function CountryTable() {
             </div>
 
             {toUpdate && (
-                <UpdateCountry 
+                <UpdateCity 
                     toUpdate={ toUpdate }
                     setUpdate={ setUpdate }
                     setReload={ setReload }
@@ -143,7 +140,7 @@ export default function CountryTable() {
             )}
 
             {toDelete && (
-                <DeleteCountry 
+                <DeleteCity 
                     toDelete={ toDelete }
                     setDelete={ setDelete }
                     setReload={ setReload }

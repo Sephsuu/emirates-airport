@@ -7,6 +7,7 @@ import { SupabaseModule } from './_supabase/supabase.module';
 import { UserModule } from './entities/users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CountryModule } from './entities/countries/country.module';
+import { CityModule } from './entities/cities/city.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { CountryModule } from './entities/countries/country.module';
 		}),
 
 		AuthModule,
+		CityModule,
 		CountryModule,
 		SupabaseModule,
 		UserModule,
