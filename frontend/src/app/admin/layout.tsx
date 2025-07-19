@@ -14,11 +14,9 @@ export default function CountriesLayout({ children }: { children: React.ReactNod
 
   return (
     <SidebarProvider>
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{  minHeight: '100vh' }} className="max-w-[1440px] flex px-2 py-4 bg-slate-100 w-full">
         {!hideSidebar && <AdminSidebar />}
-        <main style={{ flex: 1 }}>
           {children}
-        </main>
       </div>
     </SidebarProvider>
   );
