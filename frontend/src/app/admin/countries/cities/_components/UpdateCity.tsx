@@ -29,7 +29,7 @@ export function UpdateCity({ toUpdate, setUpdate, setReload }: Props) {
             } catch (error) { toast.success(`${error}`) }
         }
         fetchData();
-    }, [])
+    }, []);
 
     async function handleSubmit() {
         try {
@@ -71,12 +71,15 @@ export function UpdateCity({ toUpdate, setUpdate, setReload }: Props) {
                         value={ city.country_id }
                         onValueChange={ value => setCity(prev => ({
                             ...prev,
-                            continent: value
+                            country_id: value
                         })) } 
                     >
-                        <div className="text-md text-gray">Alpha Code</div>
+                        <div className="text-md text-gray">Country</div>
                         <SelectTrigger className="w-full border-slate-400 border-1">
-                            <SelectValue placeholder="Continent" />
+                            <SelectValue 
+                                placeholder={ city.country?.name } 
+                                aria-label={ countries.find((item) => item.id === city.country_id)?.name }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>

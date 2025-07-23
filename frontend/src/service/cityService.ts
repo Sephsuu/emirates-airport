@@ -35,7 +35,7 @@ export class CityService {
     }
 
     static async updateCity(city: City) {
-        const payload = {
+        const { country, ...payload } = {
             ...city, 
             name: city.name && city.name.toUpperCase(),
         }

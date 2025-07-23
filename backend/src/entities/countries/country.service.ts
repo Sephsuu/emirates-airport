@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { SupabaseService } from "src/_supabase/supabase.service";
 import { CountryDTO, CreateCountryDTO } from "./country.dto";
@@ -27,8 +27,8 @@ export class CountryService {
         .select('*')
         .or(`code.eq.${country.code},name.eq.${country.name}`);
         
-        if (findError) throw Error(findError.message);
-        if (existing && existing.length > 0) throw Error('Country already exists.');
+        if (findError) throw new BadRequestException(findError.message);
+        if (existing && existing.length > 0) throw new ConflictException('Country already exists.');
 
         const { data, error } = await this.supabaseService.client
         .from(table)
@@ -36,7 +36,7 @@ export class CountryService {
         .select('*')
         .single();        
 
-        if (error) throw new Error(error.message);
+        if (error) throw new BadRequestException(error.message);
 
         return data;
     }

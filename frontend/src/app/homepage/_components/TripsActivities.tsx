@@ -1,9 +1,14 @@
+"use client"
+
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { tripsImages, tripsDestination } from "@/lib/data-array";
+import { DestinationService } from "@/service/destinationService";
+import { Destination } from "@/types/destination";
 import { MapPin, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const rotate = ["rotate-10", "-rotate-5", "rotate-5", "-rotate-15", "rotate-10", "-rotate-15", "rotate-10", "-rotate-5", "rotate-10", -"rotate-15"];
 const colsClass: Record<string, string> = {
@@ -16,6 +21,16 @@ const colsClass: Record<string, string> = {
 
 export function TripsActivitesSection() {
     const [index, setIndex] = useState(0);
+    const [tripsDestination, setTripsDestination] = useState<Destination[]>([]);
+
+    useState(() => {
+        async function fetchData() {
+            try {
+                const data = DestinationService.getAllDestinations();
+                setTripsDestination(data);
+            } catch (error) { toast.error(`${error}`) }
+        }
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {

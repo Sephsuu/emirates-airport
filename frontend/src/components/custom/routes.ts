@@ -56,8 +56,8 @@ export const adminRoutes = {
             icon: Earth,
             children: [
                 { title: "Countries", href: "countries" },
-                { title: "Create Country", href: "countries/add" },
                 { title: "Cities", href: "countries/cities" },
+                { title: "Destinations", href: "countries/destinations" }
             ]
         },
         {

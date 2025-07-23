@@ -8,6 +8,7 @@ import { UserModule } from './entities/users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CountryModule } from './entities/countries/country.module';
 import { CityModule } from './entities/cities/city.module';
+import { DestinationModule } from './entities/destinations/destination.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { CityModule } from './entities/cities/city.module';
 		AuthModule,
 		CityModule,
 		CountryModule,
+		DestinationModule,
 		SupabaseModule,
 		UserModule,
 	],

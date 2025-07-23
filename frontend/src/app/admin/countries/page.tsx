@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { UpdateCountry } from "./_components/UpdateCountry";
 import { Toaster } from "@/components/ui/sonner";
 import { DeleteCountry } from "./_components/DeleteCountry";
+import Image from "next/image";
 
 export default function CountryTable() {
     const [loading, setLoading] = useState(true);
@@ -52,7 +53,15 @@ export default function CountryTable() {
     return(
         <section className="w-full flex flex-col">
             <Toaster closeButton position="top-center" />
-            <div className="text-2xl text-darkred font-emirates-bold">All Countries</div>
+            <div className="flex items-center gap-2">
+                <Image
+                    src="/images/emirates.svg"
+                    alt="Emirates Logo"
+                    width={40}
+                    height={40}
+                />
+                <div className="text-2xl text-darkred font-emirates-bold">All Countries</div>
+            </div>
 
             <div className="flex items-center mt-2">
                 <input 
@@ -90,7 +99,7 @@ export default function CountryTable() {
                     </Button>
                     <Link 
                         className="!bg-darkred rounded-md inline-flex items-center justify-center gap-2 text-light px-4 py-1 hover:opacity-90"
-                        href="/admin/countries/add"
+                        href="/admin/countries/add-country"
                     >
                         <Plus className="text-4 h-4" />Add a country
                     </Link>

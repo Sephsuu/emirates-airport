@@ -17,7 +17,7 @@ const countryInit = {
     continent: ""
 }
 
-export default function CreateCountry() {
+export default function AddCountry() {
     const [country, setCountry] = useState(countryInit);
     const [onProcess, setProcess] = useState(false);
 
