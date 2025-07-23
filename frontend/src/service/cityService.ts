@@ -10,7 +10,10 @@ export class CityService {
             headers: { "Content-Type": "application/json" },
         });
 
-        if (!res.ok) throw new Error("Bad Response");
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Something went wrong"); 
+        }
 
         return res.json();
     }
@@ -29,7 +32,10 @@ export class CityService {
             body: JSON.stringify(payload),
         });
 
-        if (!res.ok) throw new Error("Bad Response");
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Something went wrong"); 
+        }
 
         return res.json();
     }
@@ -46,7 +52,10 @@ export class CityService {
             body: JSON.stringify(payload),
         });
 
-        if (!res.ok) throw new Error("Bad Response");
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Something went wrong"); 
+        }
 
         return res.json();
     }
@@ -57,7 +66,10 @@ export class CityService {
             headers: { "Content-Type": "application/json" },
         });
 
-        if (!res.ok) throw new Error("Bad Response");
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Something went wrong"); 
+        }
 
         return res.json();
     }

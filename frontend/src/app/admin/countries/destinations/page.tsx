@@ -14,11 +14,15 @@ import Image from "next/image";
 import { Destination } from "@/types/destination";
 import { DestinationService } from "@/service/destinationService";
 import { Separator } from "@/components/ui/separator";
+import { UpdateDestination } from "./_components/UpdateDestination";
+import { DeleteDestination } from "./_components/DeleteDestination";
 
 export default function DestinationTable() {
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(false);
     const [search, setSearch] = useState('');
+    const [toUpdate, setUpdate] = useState<Destination | undefined>();
+    const [toDelete, setDelete] = useState<Destination | undefined>();
 
     const [destinations, setDestinations] = useState<Destination[]>([])
     const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
@@ -119,15 +123,39 @@ export default function DestinationTable() {
                                     <div className="text-sm font-semibold text-center">{ `${item.city?.name}, ${item.country?.name}` }</div>
                                 </div>
                                 <div className="flex justify-center gap-3 my-4">
-                                    <button><SquarePen className="w-4 h-4 text-darkgreen" /></button>
+                                    <button
+                                        onClick={ () => setUpdate(item) }
+                                    >
+                                        <SquarePen className="w-4 h-4 text-darkgreen" />
+                                    </button>
                                     <button><Info className="w-4 h-4" /></button>
-                                    <button><Trash2 className="w-4 h-4 text-darkred" /></button>
+                                    <button
+                                        onClick={ () => setDelete(item) }
+                                    >
+                                        <Trash2 className="w-4 h-4 text-darkred" />
+                                    </button>
                                 </div>
                             </div>
                         )) : (<div>No results found.</div>)
                     : (<div>There is no existing destinations as of now.</div>)
                 }
             </div>
+
+            {toUpdate && (
+                <UpdateDestination 
+                    toUpdate={ toUpdate }
+                    setUpdate={ setUpdate }
+                    setReload={ setReload }
+                />
+            )}
+
+            {toDelete && (
+                <DeleteDestination 
+                    toDelete={ toDelete }
+                    setDelete={ setDelete }
+                    setReload={ setReload }
+                />
+            )}
         </section>
     );
 }

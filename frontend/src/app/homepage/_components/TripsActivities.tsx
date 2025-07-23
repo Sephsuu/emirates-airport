@@ -1,9 +1,6 @@
-"use client"
-
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { tripsImages, tripsDestination } from "@/lib/data-array";
+import { tripsImages } from "@/lib/data-array";
 import { DestinationService } from "@/service/destinationService";
 import { Destination } from "@/types/destination";
 import { MapPin, Search } from "lucide-react";
@@ -23,13 +20,14 @@ export function TripsActivitesSection() {
     const [index, setIndex] = useState(0);
     const [tripsDestination, setTripsDestination] = useState<Destination[]>([]);
 
-    useState(() => {
+    useEffect(() => {
         async function fetchData() {
             try {
-                const data = DestinationService.getAllDestinations();
+                const data = await DestinationService.getAllDestinations();
                 setTripsDestination(data);
             } catch (error) { toast.error(`${error}`) }
         }
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -70,16 +68,16 @@ export function TripsActivitesSection() {
                 <Search className="absolute right-2 top-1/4 w-4 h-4 text-light" strokeWidth={4} />
             </div>
             <div className={`grid mt-8 ${tripsDestination.length < 6 ? colsClass[tripsDestination.length.toString()] : "grid-cols-5"}`}>
-                {tripsDestination.map((item, index) => (
+                {tripsDestination.slice(0, 10).map((item, index) => (
                     <Tooltip key={ index }>
                         <TooltipTrigger className="mx-auto">
                             <img
-                                src={ item.link }
+                                src={ item.image_url }
                                 className={`w-70 h-70 object-cover border-3 rounded-xl ${rotate[index]} transform transition-transform duration-500 hover:scale-105`}
                             />
                         </TooltipTrigger>
                         <TooltipContent className="bg-light">
-                            <div className="text-lg text-darkred font-emirates-bold"><span className="text-gray-500">{ item.city },</span> { item.country }</div>
+                            <div className="text-lg text-darkred font-emirates-bold"><span className="text-gray-500">{ item.city?.name },</span> { item.country?.name }</div>
                         </TooltipContent>
                     </Tooltip>
                 ))}

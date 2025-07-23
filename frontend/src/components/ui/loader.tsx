@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Dialog, DialogContent, DialogTitle } from './dialog';
 
 export const Loader = () => {
   return (
@@ -57,5 +58,16 @@ const StyledWrapper = styled.div`
       transform: rotate(359deg);
     }
   }`;
+
+export function LoaderModal() {
+  return(
+    <Dialog open>
+      <DialogContent className='h-50'>
+        <DialogTitle className='absolute'></DialogTitle>
+        <Loader />
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default Loader;

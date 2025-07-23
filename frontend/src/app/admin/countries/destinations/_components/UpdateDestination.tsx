@@ -1,33 +1,29 @@
-"use client"
-
 import { Button } from "@/components/ui/button";
-import Loader from "@/components/ui/loader";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Toaster } from "@/components/ui/sonner";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import Loader, { LoaderModal } from "@/components/ui/loader";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { handleChange } from "@/lib/form-handler";
 import { CityService } from "@/service/cityService";
 import { CountryService } from "@/service/countryService";
 import { DestinationService } from "@/service/destinationService";
 import { City } from "@/types/city";
-import { Country } from "@/types/country";
-import { SelectLabel } from "@radix-ui/react-select";
+import { Country } from "@/types/country"
+import { Destination } from "@/types/destination";
 import { LoaderCircle } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import { toast } from "sonner";
 
-const destinationInit = {
-    name: '',
-    city_id: '',
-    country_id: '',
-    image_url: ''
+type Props = {
+    toUpdate: Destination,
+    setUpdate: (i: Destination | undefined) => void;
+    setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AddDestination() {
+export function UpdateDestination({ toUpdate, setUpdate, setReload }: Props) {
     const [loading, setLoading] = useState(true);
     const [onProcess, setProcess] = useState(false);
 
-    const [destination, setDestination] = useState(destinationInit);
+    const [destination, setDestination] = useState(toUpdate);
     const [cities, setCities] = useState<City[]>([]);
     const [filteredCities, setFilteredCities] = useState<City[]>([]);
     const [countries, setCountries] = useState<Country[]>([]);
@@ -44,50 +40,52 @@ export default function AddDestination() {
         }
         fetchData();
     }, []);
-
+    
     useEffect(() => {
         if (destination.country_id !== '') {
             setFilteredCities(cities.filter(i => i.country?.id === destination.country_id));
         } else { setFilteredCities(cities) }
     }, [destination.country_id, cities]);
 
+    useEffect(() => {
+        console.log('Cities', cities);
+        console.log('Countries', countries);
+        const city: City | undefined = cities.find(i => i.id === destination.city?.id);
+        console.log('City:',city);
+        
+        setDestination(prev => ({
+            ...prev,
+            country_id: city?.country?.id,
+            city_id: city?.id
+        }));
+    }, [countries, cities]);
+
     async function handleSubmit() {
         try {
             setProcess(true);
-            const data = await DestinationService.createDestination(destination);
-            if (data) toast.success(`${destination.name.toUpperCase()} added to destinations.`);
+            const data = await DestinationService.updateDestination(destination);
+            if (data) toast.success(`${data.name} updated successfully.`);
 
         } catch (error) { toast.error(`${error}`) }
         finally {
             setProcess(false);
-            setDestination(destinationInit);
+            setUpdate?.(undefined);
+            setReload(prev => !prev);
         }
     }
-
-    if (loading) return <Loader />
+    
+    if (loading) return <LoaderModal />
     return(
-        <section className="w-full flex justify-center items-center">
-            <Toaster closeButton position="top-center" />
-            <div className="flex flex-col gap-4 p-4 bg-white shadow-md w-150 pb-12 border-1 border-slate-300">
-                <div className="w-full flex items-center gap-2 my-1">
-                    <Image
-                        src={ "/images/emirates_logo.png" }
-                        alt=""
-                        className="w-20"
-                        width={ 90 }
-                        height={ 90 }
-                    />
-                    <Image
-                        src={ "/images/uae_logo.png" }
-                        alt=""
-                        className="w-7"
-                        width={ 30 }
-                        height={ 30 }
-                    />
-                    <div className="text-2xl font-emirates-bold text-center ml-2">Add a Destination</div>
-                </div>
+        <Dialog open onOpenChange={open => { if (!open) setUpdate?.(undefined); }}>
+            <DialogContent>
+                <DialogTitle className="flex items-center gap-4">
+                    <div><img src="/images/emirates_logo.png" className="w-12"  /></div>
+                    <img src="/images/uae_logo.png" className="w-5"  />
+                    <div className="text-md">Update Destination: <span className="text-darkred">{ toUpdate.name }</span></div>
+                </DialogTitle>
+
                 <div>
-                    <div className="text-md text-gray">City Name</div>
+                    <div className="text-md text-gray">Destination Name</div>
                     <input
                         type="text"
                         className="w-full px-3 rounded-md py-1.5 text-md border-slate-400 border-1 uppercase"
@@ -158,14 +156,18 @@ export default function AddDestination() {
                     />
                 </div>
 
-                <Button
-                    className="!bg-gold text-light text-md hover:opacity-90 w-full mt-2"
-                    onClick={ handleSubmit }
-                    disabled={ onProcess }
-                >
-                    {onProcess ? (<><LoaderCircle className="w-4 h-4 animate-spin text-light" />Adding Destination</>) : "Add Destination"}
-                </Button>
-            </div>
-        </section>
-    );
+                <div className="flex justify-end gap-2">
+                    <DialogClose asChild><Button variant="secondary" size="sm">Cancel</Button></DialogClose>
+                    <Button
+                        onClick={ handleSubmit }
+                        className="!bg-gold hover:opacity-90"
+                        size="sm"
+                        disabled={ onProcess }
+                    >
+                        {onProcess ? (<><LoaderCircle className="w-4 h-4 animate-spin text-light" />Updating</>) : "Update"}
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
 }

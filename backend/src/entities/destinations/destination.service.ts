@@ -59,4 +59,18 @@ export class DestinationService {
 
         return data;
     }
+
+    async deleteDestination(id: string) {
+        const { data, error } = await this.supabaseService.client
+        .from(table)
+        .delete()
+        .eq('id', id)
+        .select('*')
+        .single();
+
+        if (error) throw Error(error.message);
+        if (!data) throw Error('Destination does not exists.');
+
+        return data;
+    }
 }

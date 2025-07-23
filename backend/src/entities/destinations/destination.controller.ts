@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { DestinationService } from "./destination.service";
-import { CreateDestinationDTO } from "./destination.dto";
+import { CreateDestinationDTO, DestinationDTO } from "./destination.dto";
 
 @Controller('destinations')
 export class DestinationController {
@@ -14,5 +14,15 @@ export class DestinationController {
     @Post()
     async createDestination(@Body() destination: CreateDestinationDTO) {
         return await this.destinationService.createDestination(destination);
+    }
+
+    @Patch()
+    async updateDestination(@Body() destination: DestinationDTO) {
+        return await this.destinationService.updateDestination(destination);
+    }
+
+    @Delete(':id')
+    async deleteDestination(@Param('id') id: string) {
+        return await this.destinationService.deleteDestination(id);
     }
 }
