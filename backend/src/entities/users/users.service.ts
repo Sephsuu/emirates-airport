@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { SupabaseService } from "src/_supabase/supabase.service";
-import { CreateUserDTO, GetUserDTO, UserDTO } from "./user.dto";
+import { CreateUserDTO, CreateUserWithGoogle, GetUserDTO, UserDTO } from "./user.dto";
 import * as bcrypt from 'bcrypt';
 
 const table = '_user';
@@ -60,6 +60,18 @@ export class UserService {
         }
 
         return data[0];
+    }
+
+    async createWithGoole(user: CreateUserWithGoogle) {
+        const { data, error } = await this.supabaseService.client
+        .from(table)
+        .insert(user)
+        .select('*')
+        .single();
+
+        if (error) throw Error(error.message);
+
+        return data;
     }
 
     async updateUser(id: string, updatedUser: CreateUserDTO) {

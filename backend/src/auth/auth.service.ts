@@ -37,6 +37,74 @@ export class AuthService {
         return data.url;
     }
 
+    // Updated method to handle session tokens instead of auth code
+    async handleOAuthSession(tokenData: {
+        access_token: string;
+        refresh_token: string;
+        expires_in: string;
+        token_type: string;
+    }) {
+        try {
+            console.log('handleOAuthSession - extracting user from token...');
+            
+            // Instead of setSession, get user info directly from the access token
+            const { data: { user }, error } = await this.supabaseService.client.auth.getUser(tokenData.access_token);
+
+            if (error) {
+                console.error('Failed to get user from token:', error);
+                throw new UnauthorizedException(`Invalid access token: ${error.message}`);
+            }
+
+            if (!user) {
+                throw new UnauthorizedException('No user found for this token');
+            }
+
+            console.log('User extracted from token:', {
+                id: user.id,
+                email: user.email,
+                provider: user.app_metadata?.provider
+            });
+
+            // Check if user exists in your database
+            let dbUser = await this.userService.findUserByEmail(user.email!);
+            
+            if (!dbUser) {
+                console.log('Creating new user...');
+                dbUser = await this.userService.createWithGoole({
+                    email: user.email!,
+                    name: user.user_metadata?.full_name || user.email,
+                    avatar: user.user_metadata?.avatar_url,
+                    provider: user.app_metadata?.provider!,
+                    provider_id: user.user_metadata?.provider_id || user.id,
+                });
+            }
+
+            // Generate your JWT token
+            const payload = {
+                sub: dbUser.id,
+                email: dbUser.email,
+                name: dbUser.name,
+            };
+
+            const token = this.jwtService.sign(payload);
+
+            return {
+                token,
+                user: dbUser,
+                supabase_session: {
+                    access_token: tokenData.access_token,
+                    refresh_token: tokenData.refresh_token,
+                    expires_in: tokenData.expires_in,
+                },
+            };
+            
+        } catch (error) {
+            console.error('OAuth session error:', error);
+            throw new UnauthorizedException(`OAuth session failed: ${error.message}`);
+        }
+    }
+
+
     async handleOAuthCallback(code: string, provider: string) {
         try {
         const { data, error } = await this.supabaseService.client.auth.exchangeCodeForSession(code);

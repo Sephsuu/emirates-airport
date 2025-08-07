@@ -3,6 +3,7 @@ import { AuthService } from "./auth.service";
 import { CreateUserDTO } from "src/entities/users/user.dto";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import { Response } from "express";
+import { callbackHTML } from "./callbackHTML";
 
 @Controller('auth')
 export class AuthController {
@@ -17,15 +18,33 @@ export class AuthController {
         return res.redirect(redirectUrl);
     }
 
+
     // Handle OAuth callback
     @Get('callback')
     async oauthCallback(
-        @Query('code') code: string,
-        @Query('provider') provider: string,
+        @Req() req: Request,
         @Res() res: Response
     ) {
-        await this.authService.handleOAuthCallback(code, provider);
-        return res.redirect('http://localhost:3000/dashboard');
+        res.setHeader('Content-Type', 'text/html');
+        return res.send(callbackHTML);
+    }
+
+    @Post('session')
+    async createSession(
+        @Body() tokenData: {
+            access_token: string;
+            refresh_token: string;
+            expires_in: string;
+            token_type: string;
+        },
+        @Res() res: Response
+    ) {
+        try {
+            const result = await this.authService.handleOAuthSession(tokenData);
+            return res.json(result);
+        } catch (error) {
+            return res.status(401).json({ error: 'Failed to create session' });
+        }
     }
 
     // Get current user (protected route)
