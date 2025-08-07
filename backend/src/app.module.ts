@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { CountryModule } from './entities/countries/country.module';
 import { CityModule } from './entities/cities/city.module';
 import { DestinationModule } from './entities/destinations/destination.module';
+import { AirportModule } from './entities/airports/airport.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
 	imports: [
@@ -16,6 +18,7 @@ import { DestinationModule } from './entities/destinations/destination.module';
 			isGlobal: true
 		}),
 
+		AirportModule,
 		AuthModule,
 		CityModule,
 		CountryModule,

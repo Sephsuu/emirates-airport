@@ -5,11 +5,9 @@ import Loader from "@/components/ui/loader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Delete, Download, Funnel, Info, Map, Plus, SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { City } from "@/types/city";
-import { CityService } from "@/service/cityService";
 import Image from "next/image";
 import { Destination } from "@/types/destination";
 import { DestinationService } from "@/service/destinationService";

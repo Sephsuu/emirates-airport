@@ -1,4 +1,4 @@
-import { Album, ArrowUpFromDot, BellRing, Blocks, BookImage, BookOpenText, Calendar, ChartBarStacked, ChartNoAxesCombined, ChevronsRight, CircleUserRound, Earth, FlagTriangleRight, FolderClosed, Images, ImageUp, Layers, Layers2, LockKeyhole, Mail, Megaphone, PaintBucket, Send, Sparkles, SquareLibrary, TicketsPlane, Trash2, TriangleAlert, Upload, User, UserRound, UsersRound, Wrench } from "lucide-react";
+import { Album, ArrowUpFromDot, BellRing, Blocks, BookImage, BookOpenText, Calendar, ChartBarStacked, ChartNoAxesCombined, ChevronsRight, CircleUserRound, Earth, FlagTriangleRight, FolderClosed, Images, ImageUp, Layers, Layers2, LockKeyhole, Mail, Megaphone, PaintBucket, Plane, Send, Sparkles, SquareLibrary, TicketsPlane, Trash2, TriangleAlert, Upload, User, UserRound, UsersRound, Wrench } from "lucide-react";
 
 export const homeRoutes: { title: string; href: string; description: string }[] = [
     {
@@ -52,7 +52,7 @@ export const adminRoutes = {
             ]
         },
         {
-            title: "Countries",
+            title: "Locations",
             icon: Earth,
             children: [
                 { title: "Countries", href: "countries" },
@@ -61,10 +61,10 @@ export const adminRoutes = {
             ]
         },
         {
-            title: "Bookings",
-            icon: Album,
+            title: "Travel",
+            icon: Plane,
             children: [
-                { title: "Create", href: "#" },
+                { title: "Airports", href: "airports" },
                 { title: "Update", href: "#" },
                 { title: "Delete", href: "#" },
             ]

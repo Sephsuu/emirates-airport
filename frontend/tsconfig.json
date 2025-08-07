@@ -23,6 +23,6 @@
       "shared/*": ["../shared/src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/form-handler.js", "src/app/admin/countries/all/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/form-handler.js", "src/app/admin/countries/all/page.tsx", "src/lib/formatter.js", "src/app/providers/SessionProvider.jsx"],
   "exclude": ["node_modules"]
 }
