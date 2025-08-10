@@ -18,9 +18,7 @@ export class AirportService {
         return res.json();
     }
 
-    static async createAirport(airport: Airport, imageFile?: File) {
-        console.log(imageFile);
-        
+    static async createAirport(airport: Airport, imageFile?: File) {        
         const formData = new FormData();
         formData.append('name', airport.name?.toUpperCase()!);
         formData.append('country_id', airport.country_id!);

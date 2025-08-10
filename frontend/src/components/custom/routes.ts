@@ -65,7 +65,8 @@ export const adminRoutes = {
             icon: Plane,
             children: [
                 { title: "Airports", href: "airports" },
-                { title: "Update", href: "#" },
+                { title: "Routes", href: "routes" },
+                { title: "Flights", href: "flights" },
                 { title: "Delete", href: "#" },
             ]
         },

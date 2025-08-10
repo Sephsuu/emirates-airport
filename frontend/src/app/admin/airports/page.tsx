@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, Funnel, Info, Plus, SquarePen, Trash2 } from "lucide-react";
+import { Download, Funnel, Info, Plus, SquarePen } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react"
 import { toast } from "sonner";

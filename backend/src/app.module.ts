@@ -11,6 +11,8 @@ import { CityModule } from './entities/cities/city.module';
 import { DestinationModule } from './entities/destinations/destination.module';
 import { AirportModule } from './entities/airports/airport.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { ChatModule } from './chat/chat.module';
+import { RouteModule } from './entities/route/route.module';
 
 @Module({
 	imports: [
@@ -20,9 +22,11 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 		AirportModule,
 		AuthModule,
+		ChatModule,
 		CityModule,
 		CountryModule,
 		DestinationModule,
+		RouteModule,
 		SupabaseModule,
 		UserModule,
 	],
