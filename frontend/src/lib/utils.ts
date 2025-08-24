@@ -7,14 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-export function formatFlightDate(dateString: string) {
-	// Parse date (ensure works in all browsers)
-	const [datePart, timePart] = dateString.split(" ");
-	const [year, month, day] = datePart.split("-").map(Number);
-	const [hour, minute, second] = timePart.split(":").map(Number);
-	const date = new Date(year, month - 1, day, hour, minute, second);
+export function formatTimezone(dateString: string) {
+	// Parse ISO string (works cross-browser for this format)
+	const date = new Date(dateString);
 
-	// Get today's and tomorrow's midnight times
+	// Get today's and tomorrow's midnight
 	const now = new Date();
 	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 	const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -26,24 +23,25 @@ export function formatFlightDate(dateString: string) {
 		hour12: true,
 	});
 
-	// Compare day
+	// Compare
 	if (
 		date.getFullYear() === today.getFullYear() &&
 		date.getMonth() === today.getMonth() &&
 		date.getDate() === today.getDate()
 	) {
-	return `TODAY, ${timeString}`;
+		return `TODAY, ${timeString}`;
 	} else if (
 		date.getFullYear() === tomorrow.getFullYear() &&
 		date.getMonth() === tomorrow.getMonth() &&
 		date.getDate() === tomorrow.getDate()
 	) {
-	return `TOMORROW, ${timeString}`;
+		return `TOMORROW, ${timeString}`;
 	} else {
 		const dayName = date.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
 		return `${dayName}, ${timeString}`;
 	}
 }
+
 
 export function displayCurrentDateTime() {
 	const d = new Date();
@@ -68,3 +66,5 @@ export function displayCurrentDateTime() {
 
 	return `${weekday}, ${month} ${day}, ${year}, ${displayHours}:${pad(minutes)}:${pad(seconds)} ${ampm} ${tz}`;
 }
+
+

@@ -8,7 +8,7 @@ const table = 'destination';
 export class DestinationService {
     constructor(private supabaseService: SupabaseService) {}
 
-    async getAllDestinations() {
+    async getAllDestinations() {        
         const { data, error } = await this.supabaseService.client
         .from(table)
         .select(`

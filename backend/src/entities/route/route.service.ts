@@ -13,8 +13,18 @@ export class RouteService {
         .from(table)
         .select(`
             id, type, created_at,
-            departure_airport:departure_airport_id(name),
-            departure_city:departure_city_id(name)
+            departure_airport:departure_airport_id(
+                id, name, logo_url
+            ),
+            departure_city:departure_city_id(
+                id, name
+            ),
+            arrival_airport:arrival_airport_id(
+                id, name, logo_url
+            ),
+            arrival_city:arrival_city_id(
+                id, name
+            )
         `);
 
         if (error) throw Error(error.message);

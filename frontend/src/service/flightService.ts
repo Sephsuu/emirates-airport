@@ -1,10 +1,10 @@
 import { BASE_URL } from "@/lib/utils"
-import { Destination } from "@/types/destination";
+import { Flight } from "../types/flight";
 
-const URL = `${BASE_URL}/destinations`
+const URL = `${BASE_URL}/flights`
 
-export class DestinationService {
-    static async getAllDestinations() {
+export class FlightService {
+    static async getAllFlights() {
         const res = await fetch(`${URL}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" },
@@ -14,21 +14,15 @@ export class DestinationService {
             const err = await res.json();
             throw new Error(err.message || 'Something went wrong.');
         }
-        console.log(res);
-        
 
         return res.json();
     }
 
-    static async createDestination(destination: Destination) {
-        const payload = {
-            ...destination,
-            name: destination.name?.toUpperCase()
-        }
+    static async createFlight(flight: Flight) {
         const res = await fetch(`${URL}`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(flight)
         });
 
         if (!res.ok) {
@@ -39,17 +33,11 @@ export class DestinationService {
         return res.json();
     }
 
-    static async updateDestination(destination: Destination) {
-        delete destination.city; delete destination.country;
-        const payload = {
-            ...destination,
-            name: destination.name?.toUpperCase()
-        }
-        
+    static async updateFlight(flight: Flight) {
         const res = await fetch(`${URL}`, {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(flight)
         });
 
         if (!res.ok) {
@@ -60,7 +48,7 @@ export class DestinationService {
         return res.json();
     }
 
-    static async deleteDestination(id: string) {
+    static async deleteFlight(id: string) {
         const res = await fetch(`${URL}/${id}`, {
             method: 'DELETE',
             headers: { "Content-Type": "application/json" },

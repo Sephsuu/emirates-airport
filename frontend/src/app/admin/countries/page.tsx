@@ -112,6 +112,7 @@ export default function CountryTable() {
                 <div className="pl-2">Continent</div>
                 <div className="pl-2">Action</div>
             </div>
+            
             <div className="grid grid-cols-4 bg-light gap-2 font-emirates-bold rounded-sm text-sm">
             {countries.length > 0 ?
                 filteredCountries.length > 0 ?

@@ -4,8 +4,8 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log('URL:', process.env.SUPABASE_URL);
-console.log('KEY:', process.env.SUPABASE_KEY);
+// console.log('URL:', process.env.SUPABASE_URL);
+// console.log('KEY:', process.env.SUPABASE_KEY);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
